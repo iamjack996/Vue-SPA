@@ -14,3 +14,4 @@
 Route::get('{path}', function () {
     return view('layouts.master');
 })->where(['path' => '.*']);
+
