@@ -2034,19 +2034,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
 
-    axios.get('/api/posts').then(function (response) {
-      // console.log(response)
-      _this.posts = response.data.data;
+    axios.get('/api/posts/' + this.$route.params.id).then(function (response) {
+      console.log(response);
+      _this.post = response.data;
     });
   },
   data: function data() {
     return {
-      posts: []
+      post: {}
     };
   }
 });
@@ -37541,7 +37540,7 @@ var render = function() {
                         "router-link",
                         {
                           attrs: {
-                            to: "{ name : 'posts', params: { id: row.id } }"
+                            to: { name: "posts", params: { id: row.id } }
                           }
                         },
                         [_vm._v(_vm._s(row.title))]
@@ -37586,43 +37585,20 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
-        _c(
-          "div",
-          { staticClass: "card" },
-          [
-            _c("div", { staticClass: "card-header" }, [_vm._v("文章首頁列表")]),
-            _vm._v(" "),
-            _vm._l(_vm.posts, function(row, index) {
-              return _c(
-                "div",
-                {
-                  staticClass: "card-body",
-                  staticStyle: { "border-bottom": "#1b4b72 1px solid" }
-                },
-                [
-                  _c(
-                    "h4",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          attrs: {
-                            to: "{ name : 'posts', params: { id: row.id } }"
-                          }
-                        },
-                        [_vm._v(_vm._s(row.title))]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("p", [_vm._v(_vm._s(row.content))])
-                ]
-              )
-            })
-          ],
-          2
-        )
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "div",
+            {
+              staticClass: "card-header",
+              staticStyle: { "font-size": "20px" }
+            },
+            [_vm._v(_vm._s(_vm.post.title))]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("p", [_vm._v(_vm._s(_vm.post.content))])
+          ])
+        ])
       ])
     ])
   ])

@@ -13,11 +13,10 @@
 
 </head>
 <body>
-    <br>
     <div id="app">
 
-        <div class="row">
-            <div class="navbar-header"style="margin-left: 40px">
+        <div class="row" style="background-color: white;height: 70px;padding-top: 15px;">
+            <div class="navbar-header"style="margin-left: 40px;width: 80%;">
                 <router-link to="/" class="navbar-brand">Vue SPA</router-link>
             </div>
             <div style="margin-left: 20px">
@@ -28,6 +27,8 @@
                 </ul>
             </div>
         </div>
+
+        <br>
 
         <router-view></router-view>
     </div>
