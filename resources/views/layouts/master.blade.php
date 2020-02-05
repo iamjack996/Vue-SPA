@@ -15,22 +15,8 @@
 <body>
     <div id="app">
 
-        <div class="row" style="background-color: white;height: 70px;padding-top: 15px;">
-            <div class="navbar-header"style="margin-left: 40px;width: 80%;">
-                <router-link to="/" class="navbar-brand">Vue SPA</router-link>
-            </div>
-            <div style="margin-left: 20px">
-                <ul class="nav navbar-nav navbar-right">
-                    <router-link to="/about" tag="li">
-                        <a>About</a>
-                    </router-link>
-                </ul>
-            </div>
-        </div>
+        <app></app>
 
-        <br>
-
-        <router-view></router-view>
     </div>
 
     <script src="{{ mix('/js/app.js') }}"></script>
