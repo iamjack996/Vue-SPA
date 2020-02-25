@@ -6,12 +6,17 @@ import VueRouter from "vue-router"
 import router from "./routes";
 import App from './components/App'
 
-import {ValidationProvider, ValidationObserver} from 'vee-validate';
+import zh_TW from 'vee-validate/dist/locale/zh_TW';
+import VeeValidate, {Validator} from 'vee-validate';
 
-Vue.component('ValidationProvider', ValidationProvider);
-Vue.component('ValidationObserver', ValidationObserver);
+Validator.localize('zh_TW', zh_TW);
+
+Vue.use(VeeValidate, {
+    locale: 'zh_TW'
+})
 
 Vue.use(VueRouter)
+// Vue.use(VeeValidate)
 
 Vue.component('app', App);
 
