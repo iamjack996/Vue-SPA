@@ -22,7 +22,7 @@
                 <div class="col-md-6">
                     <input v-model="email"
                            v-validate="'required|email'" data-vv-as="Email"
-                           id="email" type="email" class="form-control" name="email" autocomplete="email">
+                           id="email" type="text" class="form-control" name="email" autocomplete="email">
                     <span class="help-block" v-show="errors.has('email')">{{ errors.first('email') }}</span>
                 </div>
             </div>
@@ -75,14 +75,17 @@
         },
         methods: {
             register() {
-                console.log('hey')
+                console.log(this.errors.items)
+                if (this.errors.items > 0) {
+                    return;
+                }
                 let formData = {
                     name : this.name,
                     email : this.email,
                     password : this.password
                 }
                 axios.post('/api/register', formData).then(response => {
-                    // console.log(response)
+                    console.log(response)
                     this.$router.push({name:'confirm'})
                 })
             }

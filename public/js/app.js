@@ -2254,14 +2254,20 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      console.log('hey');
+      console.log(this.errors.items);
+
+      if (this.errors.items > 0) {
+        return;
+      }
+
       var formData = {
         name: this.name,
         email: this.email,
         password: this.password
       };
       axios.post('/api/register', formData).then(function (response) {
-        // console.log(response)
+        console.log(response);
+
         _this.$router.push({
           name: 'confirm'
         });
@@ -49903,7 +49909,7 @@ var render = function() {
               attrs: {
                 "data-vv-as": "Email",
                 id: "email",
-                type: "email",
+                type: "text",
                 name: "email",
                 autocomplete: "email"
               },
@@ -65949,8 +65955,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/vue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/vue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/user/Desktop/docker/vue/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/user/Desktop/docker/vue/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
