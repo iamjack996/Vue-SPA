@@ -22,3 +22,9 @@ Route::get('/posts','PostController@index');
 Route::get('/posts/{post}','PostController@show');
 
 Route::post('/register','Auth\RegisterController@register');
+
+
+
+
+//
+Route::get('/http/getHttpIndexData','Test\HttpController@getHttpIndexData')->name('test.http.getHttpIndexData');

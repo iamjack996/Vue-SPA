@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('index', 'Test\HttpController@index')->name('test.http.index');
+
 Route::get('{path}', function () {
     return view('layouts.master');
 })->where(['path' => '.*']);
