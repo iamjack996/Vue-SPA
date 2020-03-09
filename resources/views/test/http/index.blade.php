@@ -14,8 +14,14 @@
             background: #fe7aff;
             color: #360050;
         }
+        .services-2:nth-child(4) h3 {
+            color: #bbf5ff;
+        }
         .work {
             height: 240px;
+        }
+        .hover-opacity:hover {
+            background-color: rgba(255, 153, 36, 0.5);
         }
     </style>
 @stop
@@ -25,53 +31,35 @@
         <!-- 輪播圖 -->
         <div class="hero-wrap">
             <div class="home-slider owl-carousel">
-                <div class="slider-item" style="background-image:url({{ asset('package/homebuilder/images/bg_1.jpg') }});">
-                    <div class="overlay"></div>
-                    <div class="container">
-                        <div class="row no-gutters slider-text align-items-center justify-content-center">
-                            <div class="col-md-12 ftco-animate">
-                                <div class="text w-100 text-center">
-                                    <h2>We're here to help you</h2>
-                                    <h1 class="mb-3">Home Builder</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="slider-item" style="background-image:url({{ asset('package/homebuilder/images/bg_2.jpg') }});">
-                    <div class="overlay"></div>
-                    <div class="container">
-                        <div class="row no-gutters slider-text align-items-center justify-content-center">
-                            <div class="col-md-12 ftco-animate">
-                                <div class="text w-100 text-center">
-                                    <h2>Best Builder in the World</h2>
-                                    <h1 class="mb-3">We Build Home</h1>
+                @foreach($banners as $banner)
+                    <div class="slider-item" style="background-image:url({{ $banner['img'] }});">
+                        <div class="overlay"></div>
+                        <div class="container">
+                            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                                <div class="col-md-12 ftco-animate">
+                                    <div class="text w-100 text-center">
+                                        <a href="{{ $banner['href'] }}">
+                                            <h1 class="mb-3" style="font-size: 42px;">{{ $banner['title'] }}</h1>
+                                            <h2>{{ date_format(date_create($banner['date']),"m/d") }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: 25px;">{{ $banner['count'] }}</span>點閱</h2>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
-                <div class="slider-item" style="background-image:url({{ asset('package/homebuilder/images/bg_3.jpg') }});">
-                    <div class="overlay"></div>
-                    <div class="container">
-                        <div class="row no-gutters slider-text align-items-center justify-content-center">
-                            <div class="col-md-12 ftco-animate">
-                                <div class="text w-100 text-center">
-                                    <h2>We Build Your Home</h2>
-                                    <h1 class="mb-3">Professional Builder</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
         <section class="ftco-section ftco-no-pt ftco-no-pb">
             <div class="container">
 
+                <form action="{{ route('test.http.testSubmit') }}" method="post">
+                    @csrf
+                    <button>Submit</button>
+                </form>
                 <!-- 時事top6 -->
                 <h2 style="color: #4dc8ff;font-weight:500;">時事 <span style="color: #3cafff">Top 6</span></h2>
                 <section class="ftco-section ftco-no-pt ftco-no-pb">
@@ -80,7 +68,7 @@
 
                             @foreach($news as $data)
                                 <a href="{{ $data['href'] }}">
-                                <div class="col-md-4 ftco-animate">
+                                    <div class="col-md-4 ftco-animate">
 
                                         <div class="work img d-flex align-items-end" style="background-image: url({{ $data['img'] }});
                                             background-repeat: no-repeat;background-size: 100% 100%;cursor: pointer;">
@@ -93,13 +81,14 @@
                                             </div>
                                         </div>
 
-                                </div>
+                                    </div>
                                 </a>
                             @endforeach
 
                         </div>
                     </div>
                 </section>
+
 
                 <div class="row">
                     <div class="col-md-3 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">
@@ -128,103 +117,109 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">
-                        <div class="media block-6 d-block text-center pt-md-4">
-                            <div class="icon d-flex justify-content-center align-items-center">
-                                <span class="flaticon-skyline"></span>
-                            </div>
-                            <div class="media-body p-2 mt-3">
-                                <h3 class="heading">熱門新聞</h3>
-                                <p v-for="(row, index) in hotNews">
-                                    <a :href="row.href">@{{ row.title }}</a>(@{{ row.from }})
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="col-md-6 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">--}}
+{{--                        <div class="media block-6 d-block text-center pt-md-4">--}}
+{{--                            <div class="icon d-flex justify-content-center align-items-center">--}}
+{{--                                <span class="flaticon-skyline"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="media-body p-2 mt-3">--}}
+{{--                                <h3 class="heading">熱門新聞</h3>--}}
+{{--                                <p v-for="(row, index) in hotNews">--}}
+{{--                                    <a :href="row.href">@{{ row.title }}</a>(@{{ row.from }})--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                 </div>
 
 
-                <h2 style="color: #4dc8ff;font-weight:500;">時事 <span style="color: #3cafff">Top 6</span></h2>
+                <h2 style="color: #4dc8ff;font-weight:500;">熱門新聞 <span style="color: #3cafff">Top 6</span></h2>
                 <div class="row no-gutters">
-    {{--                <div v-for="(row, index) in news" class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-    {{--                    <div class="py-3 d-flex">--}}
-    {{--                        <div class="icon">--}}
-    {{--                            <span class="flaticon-engineer"></span>--}}
-    {{--                        </div>--}}
-    {{--                        <div class="text">--}}
-    {{--                            <h3>@{{ row.title }}</h3>--}}
-    {{--                            <p class="mb-0">@{{ row.date }}</p>--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
 
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer"></span>
-                            </div>
-                            <div class="text">
-                                <h3>Expert &amp; Professional</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer-1"></span>
-                            </div>
-                            <div class="text">
-                                <h3>High Quality Work</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
+                    @foreach($hotNews as $new)
+                        <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate hover-opacity">
+                            <div class="py-3 d-flex">
+                                <div class="row">
+                                    <a href="{{ $new['href'] }}" style="color: unset;">
+                                        <div class="text">
+                                            <h3>{{ $new['from'] }}</h3>
+                                            <p class="mb-0">{{ mb_substr($new['title'], 0, 29, 'utf-8') }} ...</p>
+                                            <br>
+                                            <span style="font-size: 10px;">人氣 {{ $new['count'] }}</span>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer-2"></span>
-                            </div>
-                            <div class="text">
-                                <h3>24/7 Help Support</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer-1"></span>
-                            </div>
-                            <div class="text">
-                                <h3>High Quality Work</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer"></span>
-                            </div>
-                            <div class="text">
-                                <h3>Expert &amp; Professional</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">
-                        <div class="py-3 d-flex">
-                            <div class="icon">
-                                <span class="flaticon-engineer"></span>
-                            </div>
-                            <div class="text">
-                                <h3>Expert &amp; Professional</h3>
-                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>Expert &amp; Professional</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer-1"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>High Quality Work</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer-2"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>24/7 Help Support</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer-1"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>High Quality Work</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>Expert &amp; Professional</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
+{{--                        <div class="py-3 d-flex">--}}
+{{--                            <div class="icon">--}}
+{{--                                <span class="flaticon-engineer"></span>--}}
+{{--                            </div>--}}
+{{--                            <div class="text">--}}
+{{--                                <h3>Expert &amp; Professional</h3>--}}
+{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
 
 
@@ -568,26 +563,41 @@
         let page = new Vue({
             el: '.page',
             data: {
+                news: [],
                 yahooHot: [],
                 netFamous: [],
                 hotNews: [],
             },
-            created() {
-                axios.get("{{ route('test.http.getHttpIndexData') }}")
-                    .then(function (rep) {
-                        console.log(rep.data);
-                        page.yahooHot = rep.data.yahooHot;
-                        page.netFamous = rep.data.netFamous;
-                        page.hotNews = rep.data.hotNews;
-
-                    })
-                    .catch(function (error) {
-                        alert('error');
-                        console.log(error);
-                    })
+            beforeMount(){
+                this.getCreateData()
             },
             methods: {
+                getCreateData() {
+                    let self = this;
+                    axios.get("{{ route('test.http.getHttpIndexData') }}")
+                        .then(function (rep) {
+                            console.log(rep.data);
+                            self.news = rep.data.news;
+                            self.yahooHot = rep.data.yahooHot;
+                            self.netFamous = rep.data.netFamous;
+                            self.hotNews = rep.data.hotNews;
 
+                            // self.$nextTick(function(){
+                            //     self.banners = rep.data.banners;
+                            // });
+
+                        })
+                        .catch(function (error) {
+                            alert('error');
+                            console.log(error);
+                        })
+                }
+            },
+            filters: {
+                setBkImg(img) {
+                    console.log(img)
+                    return "background-image: url(" + img + ")";
+                }
             }
         })
     </script>

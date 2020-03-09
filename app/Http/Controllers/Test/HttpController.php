@@ -7,14 +7,13 @@ use Illuminate\Http\Request;
 //use GuzzleHttp\Client;
 use Goutte\Client;
 use Symfony\Component\HttpClient\HttpClient;
-use function Sodium\compare;
 
 class HttpController extends Controller
 {
 
     public function __construct(Client $client)
     {
-        $this->client = new Client(HttpClient::create(['timeout' => 60]));
+        $this->client = new Client(HttpClient::create(['timeout' => 120]));
         $this->urlDailyView = 'https://dailyview.tw';
     }
 
@@ -41,37 +40,37 @@ class HttpController extends Controller
         });
         $news = array_splice($news, 0, 6);
 
-
-        // div.render-target-active > div.TW > div:nth-child(2) > div#YDC-Col1 > div#Main
-        // > #mrt-node-Col1-2-StreamContainer > ul#stream-container-scroll-template > li.StreamMegaItem
-        //div:nth-child(3) :nth-last-child(2)
-//        $getHotNews = $crawler->filter('div.render-target-active > div.TW > div:nth-last-child(2)')->each(function ($node) {
-//            print_r($node->text() . '<br>');
-////            return [
-////                'name' => $node->filter('.right-wrapper > .flexbox > h3 > span')->text(),
-////                'sound' => $node->filter('.right-wrapper > .volume-rank-info-container > .sound > .info > span')->text(),
-////            ];
-//        });
-
         // 熱門新聞
-//        $crawler = $this->client->request('GET', $this->urlDailyView . '/HotArticle/HotNews');
-//
-//        $getHotNews = $crawler->filter('div.container > div.col-md-12 > div.rank > .most_feedback > div.item > div.box')->each(function ($node, $index) {
-//            if ($index < 10) {
-//                print_r($node->text() . '<br>');
-//                return [
-//                    'title' => $node->filter('a > div.text > p')->text(),
-//                    'from' => $node->filter('a > div.number > h6')->text(),
-//                    'count' => $node->filter('a > div.number > span > p')->text(),
-//                    'href' => $node->filter('a')->attr('href')
-//                ];
-//            }
-//        });
-//
-//        dd($getHotNews);
+        $crawler = $this->client->request('GET', $this->urlDailyView . '/HotArticle/HotNews');
+
+        $hotNews = $crawler->filter('div.container > div.col-md-12 > div.rank > .most_feedback > div.item > div.box')->each(function ($node, $index) {
+            if ($index < 6) {
+                return [
+                    'title' => $node->filter('a > div.text > p')->text(),
+                    'from' => $node->filter('a > div.number > h6')->text(),
+                    'count' => $node->filter('a > div.number > span > p')->text(),
+                    'href' => $node->filter('a')->attr('href'),
+                    'img' => $node->filter('a > div.photo > img')->attr('src')
+                ];
+            }
+        });
+        $hotNews = array_splice($hotNews, 0, 6);
+
+        // 輪播圖
+        $crawler = $this->client->request('GET', $this->urlDailyView);
+
+        $banners = $crawler->filter('.home_banner > .row > .col-md-8 > .carousel > .carousel-inner > .item')->each(function ($node, $index) {
+            return [
+                'title' => $node->filter('a > div.slider_img_bg_txt_new > h4')->text(),
+                'img' => $node->filter('a > img')->attr('src'),
+                'date' => $node->filter('a > div.slider_img_bg_txt_new > .slider_img_bg_date_new > h5')->text(),
+                'count' => $node->filter('a > div.slider_img_bg_txt_new > .slider_img_bg_date_new > p > .random_num')->text(),
+                'href' => $this->urlDailyView . $node->filter('a')->attr('href')
+            ];
+        });
 
 
-        return view('test.http.index', compact('news'));
+        return view('test.http.index', compact('news', 'hotNews', 'banners'));
     }
 
     public function getHttpIndexData(Request $request)
@@ -100,7 +99,7 @@ class HttpController extends Controller
         $crawler = $this->client->request('GET', $this->urlDailyView . '/HotArticle/HotNews');
 
         $getHotNews = $crawler->filter('div.container > div.col-md-12 > div.rank > .most_feedback > div.item > div.box')->each(function ($node, $index) {
-            if ($index < 10) {
+            if ($index < 6) {
                 return [
                     'title' => $node->filter('a > div.text > p')->text(),
                     'from' => $node->filter('a > div.number > h6')->text(),
@@ -109,8 +108,32 @@ class HttpController extends Controller
                 ];
             }
         });
-        $getHotNews = array_splice($getHotNews, 0, 10);
+        $getHotNews = array_splice($getHotNews, 0, 6);
+
 
         return response()->json(['yahooHot' => $yahooHotSearch, 'netFamous' => $getNetFamous, 'hotNews' => $getHotNews]);
+    }
+
+    public function testSubmit(Request $request)
+    {
+//        dd($request->all());
+
+        $crawler = $this->client->request('GET', 'https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip112/querybytime');
+        $form = $crawler->selectButton('查詢')->form();
+
+        $crawler = $this->client->submit($form, [
+            'startStation' => '3300-臺中',
+            'endStation' => '1000-臺北',
+            'rideDate' => '2020/03/09',
+            'startTime' => '00:00',
+            'endTime' => '23:59',
+            'trainTypeList' => 'ALL',
+            'transfer' => 'ONE'
+        ]);
+//        $url = $this->client->getHistory()->current()->getUri();
+        $crawler->filter('#pageContent > div > table > tbody > tr.trip-column')->each(function ($node) {
+            print_r($node->text() . '<br>');
+        });
+
     }
 }

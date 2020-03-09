@@ -12,6 +12,7 @@
 */
 
 Route::get('index', 'Test\HttpController@index')->name('test.http.index');
+Route::post('testSubmit', 'Test\HttpController@testSubmit')->name('test.http.testSubmit');
 
 Route::get('{path}', function () {
     return view('layouts.master');
