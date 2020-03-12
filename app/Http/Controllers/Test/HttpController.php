@@ -69,8 +69,47 @@ class HttpController extends Controller
             ];
         });
 
+        // 分頁新聞
+        $crawler = $this->client->request('GET', 'https://tw.yahoo.com/');
 
-        return view('test.http.index', compact('news', 'hotNews', 'banners'));
+        $tabs = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > ul.Tabs > li')->each(function ($node, $index) {
+            return ['title' => $node->text()];
+        });
+
+        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $index) {
+            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) {
+                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex) {
+                    if ($lRIndex < 1) {
+                        if ($index > 0) {
+                            return [
+                                'title' => $node->filter('div.MouseOver > a')->text(),
+                                'href' => $node->filter('div.W-100 > a')->attr('href'),
+                                'img' => $node->filter('div.W-100 > a > img')->attr('src'),
+                                'desc' => null
+                            ];
+                        } else {
+                            return [
+                                'title' => $node->filter('div > a > div > p')->text(),
+                                'href' => $node->filter('div.Bgc-w > a')->attr('href'),
+                                'img' => $node->filter('div > div.W-100 > a > img')->attr('src'),
+                                'desc' => null
+                            ];
+                        }
+                    } else {
+                        return [
+                            'title' => $node->filter('div.Bgc-w > span > a > span')->text(),
+                            'href' => $node->filter('div.Bgc-w > span > a')->attr('href'),
+                            'img' => null,
+                            'desc' => $node->filter('div.Bgc-w > span > p > span')->text()
+                        ];
+                    }
+                });
+            });
+        });
+
+        dd($pageNews);
+
+        return view('test.http.index', compact('news', 'hotNews', 'banners', 'tabs', 'pageNews'));
     }
 
     public function getHttpIndexData(Request $request)
@@ -80,7 +119,10 @@ class HttpController extends Controller
 
         $getYahooHotSearchTen = $crawler->filter('.trendingNow > div.compList > ul')->each(function ($node) {
             return $node->filter('ul.d-ib > li')->each(function ($node) {
-                return ['text' => $node->filter('span')->attr('title')];
+                return [
+                    'text' => $node->filter('span')->attr('title'),
+                    'href' => 'https://tw.search.yahoo.com/search?p=' . $node->filter('span')->attr('title') . '&fr=yfp-search-tn&fr2=fp-hotsearch'
+                ];
             });
         });
         $yahooHotSearch = array_merge($getYahooHotSearchTen[0], $getYahooHotSearchTen[1]);
@@ -110,8 +152,45 @@ class HttpController extends Controller
         });
         $getHotNews = array_splice($getHotNews, 0, 6);
 
+        // 分頁新聞
+        $crawler = $this->client->request('GET', 'https://tw.yahoo.com/');
 
-        return response()->json(['yahooHot' => $yahooHotSearch, 'netFamous' => $getNetFamous, 'hotNews' => $getHotNews]);
+        $tabs = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > ul.Tabs > li')->each(function ($node, $index) {
+            return ['title' => $node->text()];
+        });
+        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $index) {
+            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) {
+                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex) {
+                    if ($lRIndex < 1) {
+                        if ($index > 0) {
+                            return [
+                                'title' => $node->filter('div.MouseOver > a')->text(),
+                                'href' => $node->filter('div.W-100 > a')->attr('href'),
+                                'img' => $node->filter('div.W-100 > a > img')->attr('src'),
+                                'desc' => null
+                            ];
+                        } else {
+                            return [
+                                'title' => $node->filter('div > a > div > p')->text(),
+                                'href' => $node->filter('div.Bgc-w > a')->attr('href'),
+                                'img' => $node->filter('div > div.W-100 > a > img')->attr('src'),
+                                'desc' => null
+                            ];
+                        }
+                    } else {
+                        return [
+                            'title' => $node->filter('div.Bgc-w > span > a > span')->text(),
+                            'href' => $node->filter('div.Bgc-w > span > a')->attr('href'),
+                            'img' => null,
+                            'desc' => $node->filter('div.Bgc-w > span > p > span')->text()
+                        ];
+                    }
+                });
+            });
+        });
+
+
+        return response()->json(['yahooHot' => $yahooHotSearch, 'netFamous' => $getNetFamous, 'hotNews' => $getHotNews, 'tabs' => $tabs, 'pageNews' => $pageNews]);
     }
 
     public function testSubmit(Request $request)

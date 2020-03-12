@@ -23,6 +23,19 @@
         .hover-opacity:hover {
             background-color: rgba(255, 153, 36, 0.5);
         }
+        .hover-a {
+            color: grey;
+        }
+        .hover-a:hover {
+            color: #0018ff;
+        }
+        .limit-text-len {
+            overflow: hidden;
+            -webkit-line-clamp: 1;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
     </style>
 @stop
 
@@ -97,22 +110,24 @@
                                 <span class="flaticon-stairs"></span>
                             </div>
                             <div class="media-body p-2 mt-3">
-                                <h3 class="heading">Yahoo!即時熱門搜尋</h3>
+                                <h3 class="heading">Yahoo!關鍵搜尋</h3>
+                                <br>
                                 <p v-for="(row, index) in yahooHot">
-                                    @{{ (index+1) + '. ' + row.text }}
+                                    @{{ (index+1) + '. ' }}<a :href="row.href" class="hover-a">@{{ row.text }}</a>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">
+                    <div class="col-md-4 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">
                         <div class="media block-6 d-block text-center pt-md-4">
                             <div class="icon d-flex justify-content-center align-items-center">
                                 <span class="flaticon-hook"></span>
                             </div>
                             <div class="media-body p-2 mt-3">
                                 <h3 class="heading">時尚網紅聲量</h3>
+                                <br>
                                 <p v-for="(row, index) in netFamous">
-                                    @{{ (index+1) + '. ' + row.name }} <span>(@{{ row.sound }})</span>
+                                    <span class="limit-text-len">@{{ (index+1) + '. ' + row.name }} (@{{ row.sound }})</span>
                                 </p>
                             </div>
                         </div>
@@ -133,18 +148,23 @@
 
                 </div>
 
-
-                <h2 style="color: #4dc8ff;font-weight:500;">熱門新聞 <span style="color: #3cafff">Top 6</span></h2>
+                <h2 style="color: #4dc8ff;font-weight:500;">熱門新聞 <span style="color: #3cafff">Top 6</span>
+                    @foreach($hotNews as $new)
+                        <a href="{{ $new['href'] }}" target="_blank">
+                            <img src="{{ $new['img'] }}" title="{{ $new['title'] }}" style="height: 80px;">
+                        </a>
+                    @endforeach
+                </h2>
                 <div class="row no-gutters">
 
                     @foreach($hotNews as $new)
                         <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate hover-opacity">
                             <div class="py-3 d-flex">
                                 <div class="row">
-                                    <a href="{{ $new['href'] }}" style="color: unset;">
+                                    <a href="{{ $new['href'] }}" style="color: unset;" target="_blank">
                                         <div class="text">
                                             <h3>{{ $new['from'] }}</h3>
-                                            <p class="mb-0">{{ mb_substr($new['title'], 0, 29, 'utf-8') }} ...</p>
+                                            <p class="mb-0">{{ mb_substr($new['title'], 0, 59, 'utf-8') }} ...</p>
                                             <br>
                                             <span style="font-size: 10px;">人氣 {{ $new['count'] }}</span>
                                         </div>
@@ -154,72 +174,6 @@
                         </div>
                     @endforeach
 
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>Expert &amp; Professional</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer-1"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>High Quality Work</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer-2"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>24/7 Help Support</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer-1"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>High Quality Work</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>Expert &amp; Professional</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate">--}}
-{{--                        <div class="py-3 d-flex">--}}
-{{--                            <div class="icon">--}}
-{{--                                <span class="flaticon-engineer"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="text">--}}
-{{--                                <h3>Expert &amp; Professional</h3>--}}
-{{--                                <p class="mb-0">Separated they live in. A small river named Duden flows</p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                 </div>
 
 
@@ -227,17 +181,10 @@
         </section>
 
         <section class="ftco-section ftco-no-pt ftco-no-pb">
-            <div class="container">
+            <div class="row">
                 <div class="row d-flex no-gutters">
-                    <div class="col-md-6 d-flex">
-                        <div class="img img-video d-flex align-self-stretch align-items-center justify-content-center justify-content-md-end"
-                             style="background-image:url({{ asset('package/homebuilder/images/about.jp') }});">
-                            <a href="https://vimeo.com/45830194" class="icon-video popup-vimeo d-flex justify-content-center align-items-center">
-                                <span class="icon-play"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6 pl-md-5">
+
+                    <div class="col-md-12 pl-md-5">
                         <div class="row justify-content-start py-5">
                             <div class="col-md-12 heading-section ftco-animate pl-md-4 py-md-4">
                                 <span class="subheading">Welcome to Home Builder</span>
@@ -245,26 +192,65 @@
                                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
                                 <div class="tabulation-2 mt-4">
                                     <ul class="nav nav-pills nav-fill d-md-flex d-block">
-                                        <li class="nav-item mb-md-0 mb-2">
-                                            <a class="nav-link active py-2" data-toggle="tab" href="#home1">Our Mission</a>
+                                        <li v-for="(row, index) in tabs" class="nav-item mb-md-0 mb-2 px-lg-2">
+                                            <a class="nav-link py-2" data-toggle="tab" :href="index | setTab" :class="{active: !index}">@{{ row.title }}</a>
                                         </li>
-                                        <li class="nav-item px-lg-2 mb-md-0 mb-2">
-                                            <a class="nav-link py-2" data-toggle="tab" href="#home2">Our Vision</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link py-2 mb-md-0 mb-2" data-toggle="tab" href="#home3">Our Value</a>
-                                        </li>
+{{--                                        @foreach($tabs as $key => $tab)--}}
+{{--                                            <li class="nav-item mb-md-0 mb-2 px-lg-2">--}}
+{{--                                                <a class="nav-link py-2 {{ (!$key)? '':'active' }}" data-toggle="tab" href="{{ '#home' . $key }}">@{{ row.title }}</a>--}}
+{{--                                            </li>--}}
+{{--                                        @endforeach--}}
+
+{{--                                        <li class="nav-item mb-md-0 mb-2">--}}
+{{--                                            <a class="nav-link active py-2" data-toggle="tab" href="#home1">Our Mission</a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="nav-item mb-md-0 mb-2 px-lg-2">--}}
+{{--                                            <a class="nav-link py-2" data-toggle="tab" href="#home2">Our Vision</a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="nav-item mb-md-0 mb-2">--}}
+{{--                                            <a class="nav-link py-2 mb-md-0 mb-2" data-toggle="tab" href="#home3">Our Value</a>--}}
+{{--                                        </li>--}}
                                     </ul>
                                     <div class="tab-content bg-light rounded mt-2">
-                                        <div class="tab-pane container p-0 active" id="home1">
-                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                                        <div v-for="(row, index) in pageNews" class="tab-pane container p-0" :class="{active : !index, fade : index}" :id="index | setId">
+                                            <p>
+                                                <div class="row">
+                                                    <div v-for="(row, index) in row" :class="{'col-7' : !index, 'col-5' : index}">
+                                                        <div class="row" v-if="!index">
+                                                            <div v-for="(news, index2) in row" :class="{'col-12' : !index2, 'col-6' : index2}">
+                                                                <a :href="news.href">
+                                                                    <img :src="news.img" width="100%">
+                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-else>
+                                                            <div v-for="(news, index2) in row" class="col-12">
+                                                                <a :href="news.href">
+                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
+                                                                    <p>@{{ news.desc }}</p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </p>
                                         </div>
-                                        <div class="tab-pane container p-0 fade" id="home2">
-                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                                        </div>
-                                        <div class="tab-pane container p-0 fade" id="home3">
-                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                                        </div>
+{{--                                        @foreach($pageNews as $key => $news)--}}
+{{--                                            <div class="tab-pane container p-0 {{ (!$key)? '':'active' }}" id="{{ 'home' . $key }}">--}}
+{{--                                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
+{{--                                            </div>--}}
+{{--                                        @endforeach--}}
+
+{{--                                        <div class="tab-pane container p-0 active" id="home1">--}}
+{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="tab-pane container p-0 fade" id="home2">--}}
+{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="tab-pane container p-0 fade" id="home3">--}}
+{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
+{{--                                        </div>--}}
                                     </div>
                                 </div>
                             </div>
@@ -567,6 +553,8 @@
                 yahooHot: [],
                 netFamous: [],
                 hotNews: [],
+                tabs: [],
+                pageNews: []
             },
             beforeMount(){
                 this.getCreateData()
@@ -582,9 +570,10 @@
                             self.netFamous = rep.data.netFamous;
                             self.hotNews = rep.data.hotNews;
 
-                            // self.$nextTick(function(){
-                            //     self.banners = rep.data.banners;
-                            // });
+                            self.$nextTick(function(){
+                                self.tabs = rep.data.tabs;
+                                self.pageNews = rep.data.pageNews;
+                            });
 
                         })
                         .catch(function (error) {
@@ -597,6 +586,12 @@
                 setBkImg(img) {
                     console.log(img)
                     return "background-image: url(" + img + ")";
+                },
+                setTab(index) {
+                    return '#home' + index;
+                },
+                setId(index) {
+                    return 'home' + index;
                 }
             }
         })
