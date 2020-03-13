@@ -76,22 +76,36 @@ class HttpController extends Controller
             return ['title' => $node->text()];
         });
 
-        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $index) {
-            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) {
-                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex) {
+        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $indexTab) {
+            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) use ($indexTab) {
+                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex, $indexTab) {
                     if ($lRIndex < 1) {
                         if ($index > 0) {
+                            if ($indexTab > 0) {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
+                                $getImg = explode("background-image:url('", $getImg);
+                                $getImg = explode("')", $getImg[1])[0];
+                            } else {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('src');
+                            }
                             return [
                                 'title' => $node->filter('div.MouseOver > a')->text(),
                                 'href' => $node->filter('div.W-100 > a')->attr('href'),
-                                'img' => $node->filter('div.W-100 > a > img')->attr('src'),
+                                'img' => $getImg,
                                 'desc' => null
                             ];
                         } else {
+                            if ($indexTab > 0) {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
+                                $getImg = explode("background-image:url('", $getImg);
+                                $getImg = explode("')", $getImg[1])[0];
+                            } else {
+                                $getImg = $node->filter('div > div.W-100 > a > img')->attr('src');
+                            }
                             return [
                                 'title' => $node->filter('div > a > div > p')->text(),
                                 'href' => $node->filter('div.Bgc-w > a')->attr('href'),
-                                'img' => $node->filter('div > div.W-100 > a > img')->attr('src'),
+                                'img' => $getImg,
                                 'desc' => null
                             ];
                         }
@@ -107,9 +121,9 @@ class HttpController extends Controller
             });
         });
 
-        dd($pageNews);
+//        dd($pageNews);
 
-        return view('test.http.index', compact('news', 'hotNews', 'banners', 'tabs', 'pageNews'));
+        return view('test.http.index', compact('news', 'hotNews', 'banners'));
     }
 
     public function getHttpIndexData(Request $request)
@@ -158,22 +172,37 @@ class HttpController extends Controller
         $tabs = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > ul.Tabs > li')->each(function ($node, $index) {
             return ['title' => $node->text()];
         });
-        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $index) {
-            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) {
-                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex) {
+
+        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $indexTab) {
+            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) use ($indexTab) {
+                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex, $indexTab) {
                     if ($lRIndex < 1) {
                         if ($index > 0) {
+                            if ($indexTab > 0) {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
+                                $getImg = explode("background-image:url('", $getImg);
+                                $getImg = explode("')", $getImg[1])[0];
+                            } else {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('src');
+                            }
                             return [
                                 'title' => $node->filter('div.MouseOver > a')->text(),
                                 'href' => $node->filter('div.W-100 > a')->attr('href'),
-                                'img' => $node->filter('div.W-100 > a > img')->attr('src'),
+                                'img' => $getImg,
                                 'desc' => null
                             ];
                         } else {
+                            if ($indexTab > 0) {
+                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
+                                $getImg = explode("background-image:url('", $getImg);
+                                $getImg = explode("')", $getImg[1])[0];
+                            } else {
+                                $getImg = $node->filter('div > div.W-100 > a > img')->attr('src');
+                            }
                             return [
                                 'title' => $node->filter('div > a > div > p')->text(),
                                 'href' => $node->filter('div.Bgc-w > a')->attr('href'),
-                                'img' => $node->filter('div > div.W-100 > a > img')->attr('src'),
+                                'img' => $getImg,
                                 'desc' => null
                             ];
                         }
@@ -196,23 +225,68 @@ class HttpController extends Controller
     public function testSubmit(Request $request)
     {
 //        dd($request->all());
+        $from = $request->input('from');
+        $to = $request->input('to');
+        $date = $request->input('date');
 
-        $crawler = $this->client->request('GET', 'https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip112/querybytime');
+        print_r($from . ' => ' . $to . '; 日期：' . $date);
+
+        // 解析站名
+        $crawler = $this->client->request('GET', 'https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip111/view');
+
+        $findFrom = $findTo = [];
+        $crawler->filter('#content > .traincode_all')->each(function ($node) use ($from, $to, &$findFrom, &$findTo) {
+            if (!(count($findFrom) > 1 && count($findTo) > 1)) {
+                return $node->filter('.traincode_cen > .traincode_main > div')->each(function ($node) use ($from, $to, &$findFrom, &$findTo) {
+                    if (!(count($findFrom) > 1 && count($findTo) > 1)) {
+                        if (count($findFrom) > 0 && count($findFrom) < 2) {
+                            array_push($findFrom, $node->text());
+                        }
+                        if ($from == $node->text()) {
+                            array_push($findFrom, $from);
+                        }
+
+                        if (count($findTo) > 0 && count($findTo) < 2) {
+                            array_push($findTo, $node->text());
+                        }
+                        if ($to == $node->text()) {
+                            array_push($findTo, $to);
+                        }
+                    }
+                });
+            }
+        });
+
+        $from = $findFrom[1] . '-' . $findFrom[0];
+        $to = $findTo[1] . '-' . $findTo[0];
+
+        $crawler = $this->client->request('GET', 'https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip112/gobytime');
+
         $form = $crawler->selectButton('查詢')->form();
 
         $crawler = $this->client->submit($form, [
-            'startStation' => '3300-臺中',
-            'endStation' => '1000-臺北',
-            'rideDate' => '2020/03/09',
+            'startStation' => $from,//'3300-臺中',
+            'endStation' => $to,// '1000-臺北',
+            'rideDate' => $date,//'2020/03/14',
             'startTime' => '00:00',
             'endTime' => '23:59',
             'trainTypeList' => 'ALL',
             'transfer' => 'ONE'
         ]);
+
+//        $crawler->filter('#content > #errorDiv > p')->each(function ($node) {
+//            print_r($node->html() . '<br>');
+//        });
+
 //        $url = $this->client->getHistory()->current()->getUri();
-        $crawler->filter('#pageContent > div > table > tbody > tr.trip-column')->each(function ($node) {
-            print_r($node->text() . '<br>');
+//        dd($url);
+
+//        sleep(1); > div.search-trip > table > tbody > tr.trip-column
+        $crawler->filter('#pageContent > div.search-trip > table > tbody > tr.trip-column')->each(function ($node) {
+//            print_r(111 . '<br>');
+            print_r($node->html() . '<br>');
         });
 
+        dd('#');
     }
 }

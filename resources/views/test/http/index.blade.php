@@ -36,6 +36,9 @@
             display: -webkit-box;
             -webkit-box-orient: vertical;
         }
+        .white {
+            color: white;
+        }
     </style>
 @stop
 
@@ -44,7 +47,6 @@
         <!-- 輪播圖 -->
         <div class="hero-wrap">
             <div class="home-slider owl-carousel">
-
                 @foreach($banners as $banner)
                     <div class="slider-item" style="background-image:url({{ $banner['img'] }});">
                         <div class="overlay"></div>
@@ -62,17 +64,61 @@
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
 
         <section class="ftco-section ftco-no-pt ftco-no-pb">
             <div class="container">
+                <div class="row d-flex no-gutters">
 
-                <form action="{{ route('test.http.testSubmit') }}" method="post">
-                    @csrf
-                    <button>Submit</button>
-                </form>
+                    <div class="col-md-12 pl-md-5">
+                        <div class="row justify-content-start py-5">
+                            <div class="col-md-12 heading-section ftco-animate pl-md-4 py-md-4">
+                                <span class="subheading">Yahoo!</span>
+                                <h2 class="mb-4">熱門 分類新聞</h2>
+                                <p>時下最熱門的 時事、運動、娛樂、新奇、生活、影音類新聞文章</p>
+                                <div class="tabulation-2 mt-4">
+                                    <ul class="nav nav-pills nav-fill d-md-flex d-block">
+                                        <li v-for="(row, index) in tabs" class="nav-item mb-md-0 mb-2 px-lg-2">
+                                            <a class="nav-link py-2" data-toggle="tab" :href="index | setTab" :class="{active: !index}">@{{ row.title }}</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content bg-light rounded mt-2">
+                                        <div v-for="(row, index) in pageNews" class="tab-pane container p-0" :class="{active : !index, fade : index}" :id="index | setId">
+                                            <p>
+                                                <div class="row">
+                                                    <div v-for="(row, index) in row" :class="{'col-7' : !index, 'col-5' : index}">
+                                                        <div class="row" v-if="!index">
+                                                            <div v-for="(news, index2) in row" :class="{'col-12' : !index2, 'col-6' : index2}">
+                                                                <a :href="news.href">
+                                                                    <img :src="news.img" width="100%">
+                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" v-else>
+                                                            <div v-for="(news, index2) in row" class="col-12">
+                                                                <a :href="news.href">
+                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
+                                                                    <p>@{{ news.desc }}</p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ftco-section ftco-no-pt ftco-no-pb">
+            <div class="container">
                 <!-- 時事top6 -->
                 <h2 style="color: #4dc8ff;font-weight:500;">時事 <span style="color: #3cafff">Top 6</span></h2>
                 <section class="ftco-section ftco-no-pt ftco-no-pb">
@@ -102,9 +148,8 @@
                     </div>
                 </section>
 
-
-                <div class="row">
-                    <div class="col-md-3 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">
+                <div class="row" style="margin-bottom: 35px;margin-top: 35px;">
+                    <div class="col-md-3 d-flex services align-self-stretch p-4 py-md-5 ftco-animate white" style="background: #a717ff;">
                         <div class="media block-6 d-block text-center pt-md-4">
                             <div class="icon d-flex justify-content-center align-items-center">
                                 <span class="flaticon-stairs"></span>
@@ -113,7 +158,7 @@
                                 <h3 class="heading">Yahoo!關鍵搜尋</h3>
                                 <br>
                                 <p v-for="(row, index) in yahooHot">
-                                    @{{ (index+1) + '. ' }}<a :href="row.href" class="hover-a">@{{ row.text }}</a>
+                                    @{{ (index+1) + '. ' }}<a :href="row.href" class="hover-a white">@{{ row.text }}</a>
                                 </p>
                             </div>
                         </div>
@@ -132,31 +177,37 @@
                             </div>
                         </div>
                     </div>
-{{--                    <div class="col-md-6 d-flex services align-self-stretch p-4 py-md-5 ftco-animate">--}}
-{{--                        <div class="media block-6 d-block text-center pt-md-4">--}}
-{{--                            <div class="icon d-flex justify-content-center align-items-center">--}}
-{{--                                <span class="flaticon-skyline"></span>--}}
-{{--                            </div>--}}
-{{--                            <div class="media-body p-2 mt-3">--}}
-{{--                                <h3 class="heading">熱門新聞</h3>--}}
-{{--                                <p v-for="(row, index) in hotNews">--}}
-{{--                                    <a :href="row.href">@{{ row.title }}</a>(@{{ row.from }})--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+
+                    <div class="col-md-3 py-md-5 py-4 pl-lg-5" style="background-color: #ffc107">
+                        <h2 class="footer-heading">台鐵時刻查詢</h2>
+                        <form action="{{ route('test.http.testSubmit') }}" method="post" class="contact-form">
+                            @csrf
+                            <div class="form-group">
+                                <input type="text" name="from" class="form-control" placeholder="出發站名" value="臺中">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="to" class="form-control" placeholder="抵達站名" value="臺北">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="date" class="form-control" placeholder="日期" value="{{ date('Y/m/d', time()) }}">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control submit px-3">查詢</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2" style="background-color: #ffc107"></div>
 
                 </div>
 
                 <h2 style="color: #4dc8ff;font-weight:500;">熱門新聞 <span style="color: #3cafff">Top 6</span>
                     @foreach($hotNews as $new)
                         <a href="{{ $new['href'] }}" target="_blank">
-                            <img src="{{ $new['img'] }}" title="{{ $new['title'] }}" style="height: 80px;">
+                            <img src="{{ $new['img'] }}" title="{{ $new['title'] }}" style="height: 77px;">
                         </a>
                     @endforeach
                 </h2>
                 <div class="row no-gutters">
-
                     @foreach($hotNews as $new)
                         <div class="col-md-12 col-lg-4 services-2 p-4 py-5 d-flex ftco-animate hover-opacity">
                             <div class="py-3 d-flex">
@@ -173,90 +224,8 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
 
-
-            </div>
-        </section>
-
-        <section class="ftco-section ftco-no-pt ftco-no-pb">
-            <div class="row">
-                <div class="row d-flex no-gutters">
-
-                    <div class="col-md-12 pl-md-5">
-                        <div class="row justify-content-start py-5">
-                            <div class="col-md-12 heading-section ftco-animate pl-md-4 py-md-4">
-                                <span class="subheading">Welcome to Home Builder</span>
-                                <h2 class="mb-4">We create and turn into reality</h2>
-                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
-                                <div class="tabulation-2 mt-4">
-                                    <ul class="nav nav-pills nav-fill d-md-flex d-block">
-                                        <li v-for="(row, index) in tabs" class="nav-item mb-md-0 mb-2 px-lg-2">
-                                            <a class="nav-link py-2" data-toggle="tab" :href="index | setTab" :class="{active: !index}">@{{ row.title }}</a>
-                                        </li>
-{{--                                        @foreach($tabs as $key => $tab)--}}
-{{--                                            <li class="nav-item mb-md-0 mb-2 px-lg-2">--}}
-{{--                                                <a class="nav-link py-2 {{ (!$key)? '':'active' }}" data-toggle="tab" href="{{ '#home' . $key }}">@{{ row.title }}</a>--}}
-{{--                                            </li>--}}
-{{--                                        @endforeach--}}
-
-{{--                                        <li class="nav-item mb-md-0 mb-2">--}}
-{{--                                            <a class="nav-link active py-2" data-toggle="tab" href="#home1">Our Mission</a>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="nav-item mb-md-0 mb-2 px-lg-2">--}}
-{{--                                            <a class="nav-link py-2" data-toggle="tab" href="#home2">Our Vision</a>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="nav-item mb-md-0 mb-2">--}}
-{{--                                            <a class="nav-link py-2 mb-md-0 mb-2" data-toggle="tab" href="#home3">Our Value</a>--}}
-{{--                                        </li>--}}
-                                    </ul>
-                                    <div class="tab-content bg-light rounded mt-2">
-                                        <div v-for="(row, index) in pageNews" class="tab-pane container p-0" :class="{active : !index, fade : index}" :id="index | setId">
-                                            <p>
-                                                <div class="row">
-                                                    <div v-for="(row, index) in row" :class="{'col-7' : !index, 'col-5' : index}">
-                                                        <div class="row" v-if="!index">
-                                                            <div v-for="(news, index2) in row" :class="{'col-12' : !index2, 'col-6' : index2}">
-                                                                <a :href="news.href">
-                                                                    <img :src="news.img" width="100%">
-                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" v-else>
-                                                            <div v-for="(news, index2) in row" class="col-12">
-                                                                <a :href="news.href">
-                                                                    <h4 class="hover-a">@{{ news.title }}</h4>
-                                                                    <p>@{{ news.desc }}</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </p>
-                                        </div>
-{{--                                        @foreach($pageNews as $key => $news)--}}
-{{--                                            <div class="tab-pane container p-0 {{ (!$key)? '':'active' }}" id="{{ 'home' . $key }}">--}}
-{{--                                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
-{{--                                            </div>--}}
-{{--                                        @endforeach--}}
-
-{{--                                        <div class="tab-pane container p-0 active" id="home1">--}}
-{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="tab-pane container p-0 fade" id="home2">--}}
-{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="tab-pane container p-0 fade" id="home3">--}}
-{{--                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>--}}
-{{--                                        </div>--}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
