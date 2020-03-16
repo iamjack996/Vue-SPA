@@ -40,6 +40,12 @@
             color: white;
         }
     </style>
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 @stop
 
 @section('content')
@@ -182,11 +188,20 @@
                         <h2 class="footer-heading">台鐵時刻查詢</h2>
                         <form action="{{ route('test.http.testSubmit') }}" method="post" class="contact-form">
                             @csrf
+
                             <div class="form-group">
-                                <input type="text" name="from" class="form-control" placeholder="出發站名" value="臺中">
+{{--                                <input type="text" name="from" class="form-control" placeholder="出發站名" value="臺中">--}}
+                                <input type="hidden" id="from-input" name="from" class="form-control" value="臺中">
+                                <select class="form-control select2-multiple city-select-from">
+                                    <option value="臺中">臺中</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="to" class="form-control" placeholder="抵達站名" value="臺北">
+{{--                                <input type="text" name="to" class="form-control" placeholder="抵達站名" value="臺北">--}}
+                                <input type="hidden" id="to-input" name="to" class="form-control" value="臺北">
+                                <select class="form-control select2-multiple city-select-to">
+                                    <option value="臺北">臺北</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <input type="text" name="date" class="form-control" placeholder="日期" value="{{ date('Y/m/d', time()) }}">
@@ -515,6 +530,62 @@
 
 @section('script')
     <script>
+        $(document).ready(function() {
+            $(function(){
+                $(".city-select-from").select2({
+                    ajax: {
+                        url: '{{ route('test.http.getCityData') }}',
+                        dataType: 'json',
+                        data: function (params) {
+                            let query = {
+                                search: params.term,
+                                type: 'public'
+                            }
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        },
+                        processResults: function (data) {
+                            page.selectFrom = data.results;
+                            return {
+                                results: data.results
+                            };
+                        }
+                    }
+                });
+                $(".city-select-to").select2({
+                    ajax: {
+                        url: '{{ route('test.http.getCityData') }}',
+                        dataType: 'json',
+                        data: function (params) {
+                            let query = {
+                                search: params.term,
+                                type: 'public'
+                            }
+                            // Query parameters will be ?search=[term]&type=public
+                            return query;
+                        },
+                        processResults: function (data) {
+                            page.selectTo = data.results;
+                            return {
+                                results: data.results
+                            };
+                        }
+                    }
+                });
+            });
+
+            $('.city-select-from').change(() => {
+                let cityId = $('.city-select-from').val();
+
+                $('#from-input').val(page.selectFrom[cityId-1].text);
+            })
+            $('.city-select-to').change(() => {
+                let cityId = $('.city-select-to').val();
+
+                $('#to-input').val(page.selectTo[cityId-1].text);
+            })
+        });
+
         let page = new Vue({
             el: '.page',
             data: {
@@ -523,7 +594,9 @@
                 netFamous: [],
                 hotNews: [],
                 tabs: [],
-                pageNews: []
+                pageNews: [],
+                selectFrom: [],
+                selectTo: [],
             },
             beforeMount(){
                 this.getCreateData()
@@ -561,7 +634,7 @@
                 },
                 setId(index) {
                     return 'home' + index;
-                }
+                },
             }
         })
     </script>

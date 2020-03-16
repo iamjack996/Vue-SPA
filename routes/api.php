@@ -28,3 +28,4 @@ Route::post('/register','Auth\RegisterController@register');
 
 //
 Route::get('/http/getHttpIndexData','Test\HttpController@getHttpIndexData')->name('test.http.getHttpIndexData');
+Route::get('/http/getCityData','Test\HttpController@getCityData')->name('test.http.getCityData');

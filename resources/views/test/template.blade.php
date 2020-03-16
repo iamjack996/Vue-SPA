@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/flaticon.css') }}">
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/icomoon.css') }}">
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/style.css') }}">
+
     @yield('head')
 </head>
 <body>
@@ -36,7 +37,7 @@
 
 @yield('script')
 
-<script src="{{ asset('package/homebuilder/js/jquery.min.js') }}"></script>
+{{--<script src="{{ asset('package/homebuilder/js/jquery.min.js') }}"></script>--}}
 <script src="{{ asset('package/homebuilder/js/jquery-migrate-3.0.1.min.js') }}"></script>
 <script src="{{ asset('package/homebuilder/js/popper.min.js') }}"></script>
 <script src="{{ asset('package/homebuilder/js/bootstrap.min.js') }}"></script>
@@ -50,6 +51,8 @@
 <script src="{{ asset('https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false') }}"></script>
 <script src="{{ asset('package/homebuilder/js/google-map.js') }}"></script>
 <script src="{{ asset('package/homebuilder/js/main.js') }}"></script>
+
+
 
 </body>
 </html>

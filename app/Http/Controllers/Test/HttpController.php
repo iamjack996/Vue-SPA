@@ -17,12 +17,10 @@ class HttpController extends Controller
         $this->urlDailyView = 'https://dailyview.tw';
     }
 
-
     public function index()
     {
-        $crawler = $this->client->request('GET', $this->urlDailyView . '/History?popular=False&cate=news');
-
         // 時事
+        $crawler = $this->client->request('GET', $this->urlDailyView . '/History?popular=False&cate=news');
         $news = $crawler->filter('#history_body > .history-left-block')->each(function ($node, $index) {
             if ($index < 6) {
                 $postHref = $node->filter('a')->attr('href');
@@ -220,6 +218,35 @@ class HttpController extends Controller
 
 
         return response()->json(['yahooHot' => $yahooHotSearch, 'netFamous' => $getNetFamous, 'hotNews' => $getHotNews, 'tabs' => $tabs, 'pageNews' => $pageNews]);
+    }
+
+    public function getCityData(Request $request)
+    {
+        $search = $request->input('search');
+
+        $crawler = $this->client->request('GET', 'https://www.railway.gov.tw/tra-tip-web/tip/tip001/tip111/view');
+
+        $array = $cityList = [];
+        $crawler->filter('#content > .traincode_all')->each(function ($node) use (&$array, $search) {
+            return $node->filter('.traincode_cen > .traincode_main > .traincode_name1')->each(function ($node) use (&$array, $search) {
+                if ($search) {
+//                    if($node->text() === '百福') dd(strpos($node->text(), $search));
+                    if (strpos($node->text(), $search) !== false) {
+                        array_push($array, $node->text());
+                    }
+                } else {
+                    array_push($array, $node->text());
+                }
+            });
+        });
+
+        foreach ($array as $key => $value) {
+            $city = new \stdClass();
+            $city->id = $key + 1;
+            $city->text = $value;
+            $cityList[$key] = $city;
+        }
+        return response()->json(['results' => $cityList]);
     }
 
     public function testSubmit(Request $request)
