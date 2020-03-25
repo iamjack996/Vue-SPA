@@ -14,6 +14,9 @@
 Route::get('index', 'Test\HttpController@index')->name('test.http.index');
 Route::post('testSubmit', 'Test\HttpController@testSubmit')->name('test.http.testSubmit');
 
+Route::get('socket', 'Test\SocketController@index')->name('test.socket.index');
+Route::post('/socket/newMsg','Test\SocketController@newMsg')->name('test.socket.newMsg');
+
 Route::get('{path}', function () {
     return view('layouts.master');
 })->where(['path' => '.*']);

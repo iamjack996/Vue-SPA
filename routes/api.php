@@ -26,6 +26,9 @@ Route::post('/register','Auth\RegisterController@register');
 
 
 
-//
+// Http
 Route::get('/http/getHttpIndexData','Test\HttpController@getHttpIndexData')->name('test.http.getHttpIndexData');
-Route::get('/http/getCityData','Test\HttpController@getCityData')->name('test.http.getCityData');
+Route::get('/http/getCityDat','Test\HttpController@getCityData')->name('test.http.getCityData');
+
+// Socket
+Route::post('/socket/newMsg','Test\SocketController@newMsg')->name('test.socket.newMsg');

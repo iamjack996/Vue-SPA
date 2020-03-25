@@ -39,6 +39,36 @@
         .white {
             color: white;
         }
+        .type-title {
+            font-size: 30px;
+            color: #1885ff;
+            position: relative;
+        }
+        .type-title:before {
+            content: "";
+            width: 0;
+            height: 3px;
+            background-color: #7bf0f2;
+            display: inline-block;
+            transition: width 0.3s;
+            right: 0;
+        }
+        .type-title:after {
+            content: "";
+            width: 0;
+            height: 3px;
+            background-color: #7bf0f2;
+            display: inline-block;
+            bottom: 0;
+            transition: width 0.3s;
+        }
+        .type-title:hover:before {
+            width: 100%;
+        }
+        .type-title:hover:after {
+            width: 100%;
+        }
+
     </style>
     <script
         src="https://code.jquery.com/jquery-3.4.1.js"
@@ -80,8 +110,8 @@
                     <div class="col-md-12 pl-md-5">
                         <div class="row justify-content-start py-5">
                             <div class="col-md-12 heading-section ftco-animate pl-md-4 py-md-4">
-                                <span class="subheading">Yahoo!</span>
-                                <h2 class="mb-4">熱門 分類新聞</h2>
+                                <span class="subheading" style="color: grey">Yahoo!</span>
+                                <h2 class="mb-4 type-title" style="width: 188px;">熱門 分類新聞</h2>
                                 <p>時下最熱門的 時事、運動、娛樂、新奇、生活、影音類新聞文章</p>
                                 <div class="tabulation-2 mt-4">
                                     <ul class="nav nav-pills nav-fill d-md-flex d-block">
@@ -126,7 +156,7 @@
         <section class="ftco-section ftco-no-pt ftco-no-pb">
             <div class="container">
                 <!-- 時事top6 -->
-                <h2 style="color: #4dc8ff;font-weight:500;">時事 <span style="color: #3cafff">Top 6</span></h2>
+                <h2 style="color: #00d130;font-weight:500;">時事 <span style="color: #00c52e">Top 6</span></h2>
                 <section class="ftco-section ftco-no-pt ftco-no-pb">
                     <div class="container-fluid px-md-0">
                         <div class="row no-gutters">
@@ -463,61 +493,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="ftco-section">
-            <div class="container">
-                <div class="row justify-content-center mb-5 pb-3">
-                    <div class="col-md-7 heading-section text-center ftco-animate">
-                        <span class="subheading">Our Blog</span>
-                        <h2>Recent Blog</h2>
-                    </div>
-                </div>
-                <div class="row d-flex">
-                    <div class="col-md-4 d-flex ftco-animate">
-                        <div class="blog-entry align-self-stretch">
-                            <a href="blog-single.html" class="block-20 rounded" style="background-image: url('{{ asset('package/homebuilder/images/image_1.jpg') }}');">
-                            </a>
-                            <div class="text mt-3 text-center">
-                                <div class="meta mb-2">
-                                    <div><a href="#">January 30, 2020</a></div>
-                                    <div><a href="#">Admin</a></div>
-                                    <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                                </div>
-                                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 d-flex ftco-animate">
-                        <div class="blog-entry align-self-stretch">
-                            <a href="blog-single.html" class="block-20 rounded" style="background-image: url('{{ asset('package/homebuilder/images/image_2.jpg') }}');">
-                            </a>
-                            <div class="text mt-3 text-center">
-                                <div class="meta mb-2">
-                                    <div><a href="#">January 30, 2020</a></div>
-                                    <div><a href="#">Admin</a></div>
-                                    <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                                </div>
-                                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 d-flex ftco-animate">
-                        <div class="blog-entry align-self-stretch">
-                            <a href="blog-single.html" class="block-20 rounded" style="background-image: url('{{ asset('package/homebuilder/images/image_3.jpg') }}');">
-                            </a>
-                            <div class="text mt-3 text-center">
-                                <div class="meta mb-2">
-                                    <div><a href="#">January 30, 2020</a></div>
-                                    <div><a href="#">Admin</a></div>
-                                    <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                                </div>
-                                <h3 class="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                             </div>
                         </div>
                     </div>

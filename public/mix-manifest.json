@@ -1,5 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/vue.js": "/js/vue.js"
+    "/js/vue.js": "/js/vue.js",
+    "/js/socket.io": "/js/socket.io",
+    "/js/socket.io-adapter": "/js/socket.io-adapter",
+    "/js/socket.io-client": "/js/socket.io-client",
+    "/js/socket.io-parser": "/js/socket.io-parser"
 }

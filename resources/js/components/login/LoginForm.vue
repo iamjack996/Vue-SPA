@@ -1,8 +1,3 @@
-<style>
-    .has-error {
-        color: red;
-    }
-</style>
 <template>
 
     <form class="form-horizontal" @submit.prevent="login">
@@ -73,3 +68,8 @@
         }
     }
 </script>
+<style>
+    .has-error {
+        color: red;
+    }
+</style>

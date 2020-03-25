@@ -29,8 +29,8 @@
         </form>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item {!! Request::is('index') ? 'active' : '' !!}"><a href="{{ route('test.http.index') }}" class="nav-link">Http (Home)</a></li>
+                <li class="nav-item {!! Request::is('socket') ? 'active' : '' !!}"><a href="{{ route('test.socket.index') }}" class="nav-link">Socket</a></li>
                 <li class="nav-item"><a href="team.html" class="nav-link">Our team</a></li>
                 <li class="nav-item"><a href="project.html" class="nav-link">Project</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
