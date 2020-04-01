@@ -11,11 +11,17 @@
 |
 */
 
+
+//EnableCrossRequest
+Route::group(['middleware' => 'EnableCrossRequest'], function () {
+    Route::get('test/getData', 'Test\HttpController@test')->name('test.http.test');
+});
+
 Route::get('index', 'Test\HttpController@index')->name('test.http.index');
 Route::post('testSubmit', 'Test\HttpController@testSubmit')->name('test.http.testSubmit');
 
 Route::get('socket', 'Test\SocketController@index')->name('test.socket.index');
-Route::post('/socket/newMsg','Test\SocketController@newMsg')->name('test.socket.newMsg');
+Route::post('/socket/newMsg', 'Test\SocketController@newMsg')->name('test.socket.newMsg');
 
 Route::get('{path}', function () {
     return view('layouts.master');

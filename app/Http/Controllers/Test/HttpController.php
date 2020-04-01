@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //use GuzzleHttp\Client;
 use Goutte\Client;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpClient\HttpClient;
 
 class HttpController extends Controller
@@ -15,6 +16,16 @@ class HttpController extends Controller
     {
         $this->client = new Client(HttpClient::create(['timeout' => 120]));
         $this->urlDailyView = 'https://dailyview.tw';
+    }
+
+    public function test()
+    {
+        Log::info('test~~~~');
+        $array = ['a' => [0, 2, 4],
+            'b' => [2, 5],
+            'c' => [1, 3, 4]];
+
+        return response()->json(['res' => true, 'data' => $array]);
     }
 
     public function index()

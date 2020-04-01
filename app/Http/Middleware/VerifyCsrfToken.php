@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'socket/newMsg'
+        'socket/newMsg',
+        'test/getData'
     ];
 }
