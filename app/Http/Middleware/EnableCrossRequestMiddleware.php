@@ -20,6 +20,8 @@ class EnableCrossRequestMiddleware
         $allow_origin = [
             'http://127.0.0.1:6001/', //允许访问
             'http://127.0.0.1/',
+            'http://moon.gtcats.com:6001/',
+            'http://moon.gtcats.com/',
         ];
         if (in_array($origin, $allow_origin)) {
             $response->header('Access-Control-Allow-Origin', $origin);

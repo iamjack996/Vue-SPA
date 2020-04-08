@@ -1,6 +1,7 @@
 @extends('test.template')
 
 @section('head')
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
     <script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -70,7 +71,7 @@
                                             <h5 class="mb-0" style="color:white; font-size: 24px;">輸入暱稱</h5>
                                         </div>
                                         <div class="col-md-8 d-flex align-items-center">
-                                            <form action="#" class="subscribe-form">
+                                            <form class="subscribe-form" @submit.prevent="addUser">
                                                 <div class="form-group d-flex">
                                                     <input type="text" class="form-control" placeholder="暱稱" id="user_name">
                                                     <input type="submit" value="使用" class="submit px-3" @click="addUser">

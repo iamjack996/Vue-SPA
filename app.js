@@ -42,44 +42,16 @@ chat.on('connection', function (socket) {
         let {user, msg} = data
         console.log('appendMsg / Data => ' + msg)
 
-        // let options = {
-        //     // host: "https://178.128.88.251/",
-        //     host: "localhost",
-        //     port: 80,
-        //     // path: "wallet_demo/json.php",
-        //     path: "/test/getData",
-        //     method: "GET",
-        //     // headers: {
-        //     //     "Content-Type": "application/json",
-        //     //     // "Authorization": "Bearer token"
-        //     // }
-        // }
-        //
-        // const req = http.request(options, res => {
-        //     console.log(`statusCode: ${res.statusCode}`)
-        //
-        //     res.on('data', d => {
-        //         process.stdout.write(d)
-        //     })
-        // })
-        //
-        // req.on('error', error => {
-        //     console.error(error)
-        // })
-        //
-        // req.end()
-
-        axios
-            .post('http://172.18.0.3/socket/newMsg',{
-                user, msg
-            })
-            .then(res => {
-                console.log(`statusCode: ${res.statusCode}`)
-                console.log(res)
-            })
-            .catch(error => {
-                console.error(error)
-            })
+        axios.post('http://moon.gtcats.com/socket/newMsg', {
+          user, msg
+        })
+        .then((res) => {
+          // console.log(`statusCode: ${res.statusCode}`)
+          console.log(res.res)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     })
 
     socket.on('disconnect', () => {
@@ -92,6 +64,6 @@ chat.on('connection', function (socket) {
 //     console.log(err);
 // });
 
-server.listen(8080, () => { // 掛上 6001 port
+server.listen(6001, () => { // 掛上 6001 port
     console.log("Server Started. http://localhost:6001");
 });

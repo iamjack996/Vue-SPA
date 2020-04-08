@@ -20,7 +20,7 @@ class HttpController extends Controller
 
     public function test()
     {
-        Log::info('test~~~~');
+        Log::info('Get to test~~~~');
         $array = ['a' => [0, 2, 4],
             'b' => [2, 5],
             'c' => [1, 3, 4]];
