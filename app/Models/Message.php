@@ -12,6 +12,12 @@ class Message extends Model
 
     protected $guarded = [];
 
+    public function getDataList($where, $method, $page = null)
+    {
+        if ($page) return $this->where($where)->{$method}($page);
+        return $this->where($where)->{$method}();
+    }
+
     public function addData($add)
     {
         return $this->create($add);

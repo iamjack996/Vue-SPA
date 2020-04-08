@@ -22,7 +22,7 @@ app.all("*", function (req, res, next) {
         next();
 })
 
-app.get('/test', function(req, res) {
+app.get('/test', function (req, res) {
     res.send('hello world');
 });
 
@@ -31,27 +31,30 @@ http.createServer(app)
 let chat = io.of('/test')
 chat.on('connection', function (socket) {
     console.log('Socket Connected!')
-    console.log(server.address().port)
-    console.log('hostname -> ' +os.hostname())
+    // console.log(server.address().port)
+    // console.log('hostname -> ' + os.hostname())
 
-    socket.on('load', function (data) {
-        console.log(data + ' >>> load.')
+    socket.on('load', function () {
+        console.log('--- >>> load.')
+        socket.join('socketBlade')
     })
 
-    socket.on('appendMsg', function (data) {
+    socket.on('saveMsg', function (data) {
         let {user, msg} = data
-        console.log('appendMsg / Data => ' + msg)
+        console.log('saveMsg / Data => ' + msg)
 
         axios.post('http://moon.gtcats.com/socket/newMsg', {
-          user, msg
+            user, msg
         })
-        .then((res) => {
-          // console.log(`statusCode: ${res.statusCode}`)
-          console.log(res.res)
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+            .then((res) => {
+                // console.log(`statusCode: ${res.statusCode}`)
+                console.log(res.data)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+
+        socket.to('socketBlade').emit("updateMsg", data)
     })
 
     socket.on('disconnect', () => {
@@ -59,10 +62,6 @@ chat.on('connection', function (socket) {
     });
 
 })
-
-// process.on('uncaughtException', function (err) {
-//     console.log(err);
-// });
 
 server.listen(6001, () => { // 掛上 6001 port
     console.log("Server Started. http://localhost:6001");

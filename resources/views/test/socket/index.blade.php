@@ -26,33 +26,32 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        .text_r {
+            text-align: right;
+        }
     </style>
 @stop
 
 @section('content')
     <span class="page">
 
-
-        <section class="ftco-section" style="padding: 50px 0">
+        <h4 style="margin-left: 80px;">留言板</h4>
+        <section class="ftco-section" style="padding: 20px 0;">
             <div class="container" style="border: 2px solid grey">
                 <div class="row">
-                    <div class="col-md-12" style="height: 500px;overflow:scroll">
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-                        <h5 class="font-weight-bold">Home Builder</h5>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                    <div class="col-md-12 msgBox" style="height: 500px;overflow:scroll">
+                        <span v-for="(msg, index) in messages">
+                            <h5 class="font-weight-bold" :class="{ text_r: msg.local }">@{{ msg.user }}</h5>
+                            <p :class="{ text_r: msg.local }">@{{ msg.content }}
+                                <span style="padding-left: 20px">(
+                                    <span v-if="msg.local">now.</span>
+                                    <span v-else>@{{ msg.timeAt }}</span>
+                                )</span>
+                            </p>
+                        </span>
+
+{{--                        <h5 class="font-weight-bold text_r">Home Builder</h5>--}}
+{{--                        <p class="text_r">Far far away, behind the word mountains, far from the con.</p>--}}
 
                     </div>
                 </div>
@@ -123,29 +122,76 @@
             socket.on("connect", () => {
                 setTimeout(function () {
                     console.log('連線中')
-                    socket.emit("load", '123123')
+                    socket.emit("load")
                 }, 2000)
+            })
+
+            socket.on('updateMsg', function (msgData) {
+                console.log(msgData)
+                let today = new Date();
+                page.messages.push({
+                    user: msgData.user,
+                    content: msgData.msg,
+                    local: false,
+                    timeAt: (today.getMonth()+1) + '/' + today.getDate() + ' ' + today.getHours() + ':' + today.getMinutes()
+                })
+                $(".msgBox").animate({ scrollTop: $(document).height()+9999 }, "fast");
             })
         });
 
         let page = new Vue({
             el: '.page',
             data: {
-                user: null
+                user: null,
+                messages: []
+            },
+            beforeMount(){
+                this.getCreateData()
             },
             methods: {
+                getCreateData() {
+                    let self = this;
+                    axios.get("{{ route('test.socket.getSocketIndexData') }}")
+                        .then(function (rep) {
+                            console.log(rep.data);
+                            self.$nextTick(function(){
+                                self.messages = rep.data.messages;
+                                $(".msgBox").animate({ scrollTop: $(document).height()+9999 }, "fast");
+                            });
+                        })
+                        .catch(function (error) {
+                            alert('error');
+                            console.log(error);
+                        })
+                },
                 addUser() {
                     this.user = $('#user_name').val()
+                    $('#user_name').val('')
                 },
                 sendMsg() {
+                    let msg = $('#new_msg').val()
                     let msgData = {
                         user: this.user,
-                        msg: $('#new_msg').val()
+                        msg
                     }
                     if (!msgData.msg) {
-                        alert('empty')
+                        swal.fire(
+                            '內容不可空',
+                            '',
+                            'error'
+                        )
+                        return;
                     }
-                    socket.emit("appendMsg", msgData)
+                    socket.emit("saveMsg", msgData)
+
+                    this.messages.push({
+                        user: this.user,
+                        content: msg,
+                        local: true
+                    })
+                    $('#new_msg').val('')
+
+                    $(".msgBox").animate({ scrollTop: $(document).height()+9999 }, "fast");
                 }
             },
             filters: {

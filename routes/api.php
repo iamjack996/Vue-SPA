@@ -31,4 +31,5 @@ Route::get('/http/getHttpIndexData','Test\HttpController@getHttpIndexData')->nam
 Route::get('/http/getCityDat','Test\HttpController@getCityData')->name('test.http.getCityData');
 
 // Socket
+Route::get('/socket/getSocketIndexData','Test\SocketController@getSocketIndexData')->name('test.socket.getSocketIndexData');
 Route::post('/socket/newMsg','Test\SocketController@newMsg')->name('test.socket.newMsg');

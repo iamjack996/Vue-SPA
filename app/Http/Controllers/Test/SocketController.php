@@ -19,7 +19,20 @@ class SocketController extends Controller
 
     public function index()
     {
+        $messages = $this->message->getDataList([], 'get');
+        foreach ($messages as $key => $msg) {
+            $msg->timeAt = date_format($msg->created_at, "m/d H:i");
+        }
         return view('test.socket.index');
+    }
+
+    public function getSocketIndexData(Request $request)
+    {
+        $messages = $this->message->getDataList([], 'get');
+        foreach ($messages as $key => $msg) {
+            $msg->timeAt = date_format($msg->created_at, "m/d H:i");
+        }
+        return response()->json(['messages' => $messages]);
     }
 
     public function newMsg(Request $request)
@@ -30,8 +43,8 @@ class SocketController extends Controller
             'content' => $request->input('msg')
         ];
         $result = $this->message->addData($add);
-        if (!$result) return response()->json(['res' => false]);
+        if (!$result) return response()->json(['res' => false, 'msg' => '123123']);
 
-        return response()->json(['res' => true]);
+        return response()->json(['res' => true, 'msg' => '456456']);
     }
 }
