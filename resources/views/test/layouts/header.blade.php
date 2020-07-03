@@ -1,7 +1,7 @@
 <div class="container pt-5">
     <div class="row justify-content-between">
         <div class="col">
-            <a class="navbar-brand" href="index.html">Home<span>builder.</span></a>
+            <a class="navbar-brand" href="index.html">Jack<span> 練習</span></a>
         </div>
         <div class="col d-flex justify-content-end">
             <div class="social-media">
@@ -31,10 +31,10 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {!! Request::is('index') ? 'active' : '' !!}"><a href="{{ route('test.http.index') }}" class="nav-link">Http (Home)</a></li>
                 <li class="nav-item {!! Request::is('socket') ? 'active' : '' !!}"><a href="{{ route('test.socket.index') }}" class="nav-link">Socket</a></li>
-                <li class="nav-item"><a href="team.html" class="nav-link">Our team</a></li>
-                <li class="nav-item"><a href="project.html" class="nav-link">Project</a></li>
-                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="team.html" class="nav-link">Ｘ</a></li>
+                <li class="nav-item"><a href="project.html" class="nav-link">Ｘ</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">Ｘ</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Ｘ</a></li>
             </ul>
         </div>
     </div>

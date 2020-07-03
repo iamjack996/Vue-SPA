@@ -78,61 +78,19 @@ class HttpController extends Controller
             ];
         });
 
-        // 分頁新聞
-        $crawler = $this->client->request('GET', 'https://tw.yahoo.com/');
+        // Today看世界
+        $crawler = $this->client->request('GET', 'https://today.line.me/tw/v2/page/5ea798c4d8825541ac250c6a');
 
-        $tabs = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > ul.Tabs > li')->each(function ($node, $index) {
-            return ['title' => $node->text()];
+        $todayVideos = $crawler->filter('.listModule > .articleCard')->each(function ($node, $index) {
+            return [
+                'url' => $node->filter('a')->attr('href'),
+                'title' => str_replace("【TODAY 看世界】", "", $node->filter('a > div.articleCard-content > h2')->text()),
+//                'img' => $node->filter('a > div.articleCard-imageWrap')->html()
+            ];
         });
 
-        $pageNews = $crawler->filter('.Bxz-bb > #Main > #applet_p_1468442 > .App-Bd > div > div > div > div.Story-Items > div.Mt-0')->each(function ($node, $indexTab) {
-            return $node->filter('div.today > div > div > div')->each(function ($node, $lRIndex) use ($indexTab) {
-                return $node->filter('ul > li')->each(function ($node, $index) use ($lRIndex, $indexTab) {
-                    if ($lRIndex < 1) {
-                        if ($index > 0) {
-                            if ($indexTab > 0) {
-                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
-                                $getImg = explode("background-image:url('", $getImg);
-                                $getImg = explode("')", $getImg[1])[0];
-                            } else {
-                                $getImg = $node->filter('div.W-100 > a > img')->attr('src');
-                            }
-                            return [
-                                'title' => $node->filter('div.MouseOver > a')->text(),
-                                'href' => $node->filter('div.W-100 > a')->attr('href'),
-                                'img' => $getImg,
-                                'desc' => null
-                            ];
-                        } else {
-                            if ($indexTab > 0) {
-                                $getImg = $node->filter('div.W-100 > a > img')->attr('style');
-                                $getImg = explode("background-image:url('", $getImg);
-                                $getImg = explode("')", $getImg[1])[0];
-                            } else {
-                                $getImg = $node->filter('div > div.W-100 > a > img')->attr('src');
-                            }
-                            return [
-                                'title' => $node->filter('div > a > div > p')->text(),
-                                'href' => $node->filter('div.Bgc-w > a')->attr('href'),
-                                'img' => $getImg,
-                                'desc' => null
-                            ];
-                        }
-                    } else {
-                        return [
-                            'title' => $node->filter('div.Bgc-w > span > a > span')->text(),
-                            'href' => $node->filter('div.Bgc-w > span > a')->attr('href'),
-                            'img' => null,
-                            'desc' => $node->filter('div.Bgc-w > span > p > span')->text()
-                        ];
-                    }
-                });
-            });
-        });
 
-//        dd($pageNews);
-
-        return view('test.http.index', compact('news', 'hotNews', 'banners'));
+        return view('test.http.index', compact('news', 'hotNews', 'banners', 'todayVideos'));
     }
 
     public function getHttpIndexData(Request $request)

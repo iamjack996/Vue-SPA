@@ -321,88 +321,23 @@
             </div>
         </section>
 
+        <h2 class="text-center" style="color: #fdbf33;font-weight:500;margin-bottom: 0px;">Today <span style="color: #ffc107bd">看世界</span></h2>
         <section class="ftco-section ftco-no-pt ftco-no-pb">
             <div class="container-fluid px-md-0">
                 <div class="row no-gutters">
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-1.jpg') }});">
-                            <a href="images/work-1.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-2.jpg') }});">
-                            <a href="images/work-2.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-3.jpg') }});">
-                            <a href="images/work-3.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-4.jpg') }});">
-                            <a href="images/work-4.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
+                    @foreach($todayVideos as $video)
+                        <div class="col-md-4 ftco-animate">
+                            <div class="work img d-flex align-items-end" style="background-image: url('{{ asset('package/homebuilder/images/work-'. (string)((int)$loop->index + 1).'.jpg') }}');">
+                                <div class="desc w-100 px-4">
+                                    <div class="text w-100 mb-3">
+                                        <h2><a href="{{ $video['url'] }}" target="_blank">{{ $video['title'] }}</a></h2>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-5.jpg') }});">
-                            <a href="images/work-5.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ftco-animate">
-                        <div class="work img d-flex align-items-end" style="background-image: url({{ asset('package/homebuilder/images/work-6.jpg') }});">
-                            <a href="images/work-6.jpg" class="icon image-popup d-flex justify-content-center align-items-center">
-                                <span class="icon-expand"></span>
-                            </a>
-                            <div class="desc w-100 px-4">
-                                <div class="text w-100 mb-3">
-                                    <span>Building</span>
-                                    <h2><a href="work-single.html">College Health Profession</a></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
+
                 </div>
             </div>
         </section>

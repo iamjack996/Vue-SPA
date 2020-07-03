@@ -43,7 +43,8 @@ chat.on('connection', function (socket) {
         let {user, msg} = data
         console.log('saveMsg / Data => ' + msg)
 
-        axios.post('http://moon.gtcats.com/socket/newMsg', {
+        // https 會失敗
+        axios.post('http://cardjack.shiftpaydata.cc/socket/newMsg', {
             user, msg
         })
             .then((res) => {
