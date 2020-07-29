@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/flaticon.css') }}">
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/icomoon.css') }}">
     <link rel="stylesheet" href="{{ asset('package/homebuilder/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/jack.css') }}">
 
     @yield('head')
 </head>

@@ -2,72 +2,6 @@
 
 @section('head')
     <style>
-        .services-2:nth-child(4) {
-            background: #444ff1;
-            color: #ffffff;
-        }
-        .services-2:nth-child(5) {
-            background: #55e63e;
-            color: #d6f774;
-        }
-        .services-2:nth-child(6) {
-            background: #fe7aff;
-            color: #360050;
-        }
-        .services-2:nth-child(4) h3 {
-            color: #bbf5ff;
-        }
-        .work {
-            height: 240px;
-        }
-        .hover-opacity:hover {
-            background-color: rgba(255, 153, 36, 0.5);
-        }
-        .hover-a {
-            color: grey;
-        }
-        .hover-a:hover {
-            color: #0018ff;
-        }
-        .limit-text-len {
-            overflow: hidden;
-            -webkit-line-clamp: 1;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-        }
-        .white {
-            color: white;
-        }
-        .type-title {
-            font-size: 30px;
-            color: #1885ff;
-            position: relative;
-        }
-        .type-title:before {
-            content: "";
-            width: 0;
-            height: 3px;
-            background-color: #7bf0f2;
-            display: inline-block;
-            transition: width 0.3s;
-            right: 0;
-        }
-        .type-title:after {
-            content: "";
-            width: 0;
-            height: 3px;
-            background-color: #7bf0f2;
-            display: inline-block;
-            bottom: 0;
-            transition: width 0.3s;
-        }
-        .type-title:hover:before {
-            width: 100%;
-        }
-        .type-title:hover:after {
-            width: 100%;
-        }
 
     </style>
     <script
@@ -110,13 +44,13 @@
                     <div class="col-md-12 pl-md-5">
                         <div class="row justify-content-start py-5">
                             <div class="col-md-12 heading-section ftco-animate pl-md-4 py-md-4">
-                                <span class="subheading" style="color: grey">Yahoo!</span>
-                                <h2 class="mb-4 type-title" style="width: 188px;">熱門 分類新聞</h2>
+                                <span class="subheading title-text" style="color: grey">Yahoo!</span>
+                                <h2 class="mb-4 type-title" style="width: 220px;">熱門 分類新聞</h2>
                                 <p>時下最熱門的 時事、運動、娛樂、新奇、生活、影音類新聞文章</p>
                                 <div class="tabulation-2 mt-4">
                                     <ul class="nav nav-pills nav-fill d-md-flex d-block">
                                         <li v-for="(row, index) in tabs" class="nav-item mb-md-0 mb-2 px-lg-2">
-                                            <a class="nav-link py-2" data-toggle="tab" :href="index | setTab" :class="{active: !index}">@{{ row.title }}</a>
+                                            <a class="nav-link py-2 y-tab-title" data-toggle="tab" :href="index | setTab" :class="{active: !index}">@{{ row.title }}</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content bg-light rounded mt-2">
@@ -156,7 +90,7 @@
         <section class="ftco-section ftco-no-pt ftco-no-pb">
             <div class="container">
                 <!-- 時事top6 -->
-                <h2 style="color: #00d130;font-weight:500;">時事 <span style="color: #00c52e">Top 6</span></h2>
+                <h2 class="title-text" style="color: #00d130;font-weight:500;">時事 <span class="title-text" style="color: #00c52e;">Top 6</span></h2>
                 <section class="ftco-section ftco-no-pt ftco-no-pb">
                     <div class="container-fluid px-md-0">
                         <div class="row no-gutters">
@@ -245,7 +179,7 @@
 
                 </div>
 
-                <h2 style="color: #4dc8ff;font-weight:500;">熱門新聞 <span style="color: #3cafff">Top 6</span>
+                <h2 class="title-text" style="color: #4dc8ff;font-weight:500;">熱門新聞 <span class="title-text" style="color: #3cafff">Top 6</span>
                     @foreach($hotNews as $new)
                         <a href="{{ $new['href'] }}" target="_blank">
                             <img src="{{ $new['img'] }}" title="{{ $new['title'] }}" style="height: 77px;">

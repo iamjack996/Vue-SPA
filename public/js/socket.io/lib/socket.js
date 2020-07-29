@@ -1,4 +1,4 @@
-console.log('socket.js')
+
 /**
  * Module dependencies.
  */

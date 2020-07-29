@@ -31,6 +31,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {!! Request::is('index') ? 'active' : '' !!}"><a href="{{ route('test.http.index') }}" class="nav-link">Http (Home)</a></li>
                 <li class="nav-item {!! Request::is('socket') ? 'active' : '' !!}"><a href="{{ route('test.socket.index') }}" class="nav-link">Socket</a></li>
+                <li class="nav-item {!! Request::is('animate') ? 'active' : '' !!}"><a href="{{ route('test.animate.index') }}" class="nav-link">Animate</a></li>
                 <li class="nav-item"><a href="team.html" class="nav-link">Ｘ</a></li>
                 <li class="nav-item"><a href="project.html" class="nav-link">Ｘ</a></li>
                 <li class="nav-item"><a href="blog.html" class="nav-link">Ｘ</a></li>

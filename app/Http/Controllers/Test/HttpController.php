@@ -89,7 +89,6 @@ class HttpController extends Controller
             ];
         });
 
-
         return view('test.http.index', compact('news', 'hotNews', 'banners', 'todayVideos'));
     }
 

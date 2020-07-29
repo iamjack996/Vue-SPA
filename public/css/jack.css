@@ -1,0 +1,79 @@
+.services-2:nth-child(4) {
+    background: #444ff1;
+    color: #ffffff;
+}
+.services-2:nth-child(5) {
+    background: #55e63e;
+    color: #d6f774;
+}
+.services-2:nth-child(6) {
+    background: #fe7aff;
+    color: #360050;
+}
+.services-2:nth-child(4) h3 {
+    color: #bbf5ff;
+}
+.work {
+    height: 240px;
+}
+.hover-opacity:hover {
+    background-color: rgba(255, 153, 36, 0.5);
+}
+.hover-a {
+    color: grey;
+}
+.hover-a:hover {
+    color: #0018ff;
+}
+.limit-text-len {
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.white {
+    color: white;
+}
+.type-title {
+    font-size: 30px;
+    color: #1885ff;
+    position: relative;
+    height: 120px;
+    padding-top: 5%;
+}
+.type-title:before {
+    content: "";
+    width: 0;
+    height: 3px;
+    background-color: #7bf0f2;
+    display: inline-block;
+    transition: width 0.3s;
+    right: 0;
+}
+.type-title:after {
+    content: "";
+    width: 0;
+    height: 3px;
+    background-color: #7bf0f2;
+    display: inline-block;
+    bottom: 0;
+    transition: width 0.3s;
+}
+.type-title:hover:before {
+    width: 100%;
+}
+.type-title:hover:after {
+    width: 100%;
+}
+.type-title:hover {
+    width: 100%;
+    padding-top: 0;
+}
+
+.title-text:hover {
+    color: #bfbfbf!important;
+}
+.y-tab-title:hover {
+    background-color: #ffeabb!important;
+}
