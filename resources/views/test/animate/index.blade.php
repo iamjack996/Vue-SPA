@@ -1,229 +1,151 @@
-@extends('test.template')
-
-@section('head')
-    <style>
-
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 9</title>
+{{--    <script src="//cdn.jsdelivr.net/npm/phaser@3.1.1/dist/phaser.js"></script>--}}
+    <script src="{{ asset('package/phaser-v3.js') }}"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
     </style>
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous"></script>
-@stop
+</head>
+<body>
 
-@section('content')
-    <span class="page">
+<script type="text/javascript">
 
-        <div class="test-animate">123123456</div>
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 300 },
+                debug: false
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
 
+    var player;
+    var stars;
+    var platforms;
+    var cursors;
+    var score = 0;
+    var scoreText;
 
-        <section class="ftco-counter" id="section-counter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-                        <div class="block-18 d-flex">
-                            <div class="text d-flex align-items-center">
-                                <strong class="number" data-number="50">0</strong>
-                            </div>
-                            <div class="text-2">
-                                <span>Years of <br>Experienced</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-                        <div class="block-18 d-flex">
-                            <div class="text d-flex align-items-center">
-                                <strong class="number" data-number="8500">0</strong>
-                            </div>
-                            <div class="text-2">
-                                <span>Project <br>Done</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-                        <div class="block-18 d-flex">
-                            <div class="text d-flex align-items-center">
-                                <strong class="number" data-number="378">0</strong>
-                            </div>
-                            <div class="text-2">
-                                <span>Professional <br>Expert</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
-                        <div class="block-18 d-flex">
-                            <div class="text d-flex align-items-center">
-                                <strong class="number" data-number="1200">0</strong>
-                            </div>
-                            <div class="text-2">
-                                <span>Machineries <br>Equipments</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    var game = new Phaser.Game(config);
 
+    function preload ()
+    {
+        this.load.image('sky', 'src/games/firstgame/assets/sky.png');
+        this.load.image('ground', 'src/games/firstgame/assets/platform.png');
+        this.load.image('star', 'src/games/firstgame/assets/star.png');
+        this.load.image('bomb', 'src/games/firstgame/assets/bomb.png');
+        this.load.spritesheet('dude', 'src/games/firstgame/assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    }
 
+    function create ()
+    {
+        this.add.image(400, 300, 'sky');
 
-        <section class="ftco-section testimony-section bg-primary">
-            <div class="container">
-                <div class="row justify-content-center mb-5">
-                    <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
-                        <span class="subheading">Testimonial</span>
-                        <h2 class="mb-4">Happy Clients</h2>
-                    </div>
-                </div>
-                <div class="row ftco-animate">
-                    <div class="col-md-12">
-                        <div class="carousel-testimony owl-carousel ftco-owl">
-                            <div class="item">
-                                <div class="testimony-wrap py-4">
-                                    <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                                    <div class="text">
-                                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-img" style="background-image: url({{ asset('package/homebuilder/images/person_1.jpg') }})"></div>
-                                            <div class="pl-3">
-                                                <p class="name">Roger Scott</p>
-                                                <span class="position">Marketing Manager</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="testimony-wrap py-4">
-                                    <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                                    <div class="text">
-                                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-img" style="background-image: url({{ asset('package/homebuilder/images/person_2.jpg') }})"></div>
-                                            <div class="pl-3">
-                                                <p class="name">Roger Scott</p>
-                                                <span class="position">Marketing Manager</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="testimony-wrap py-4">
-                                    <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                                    <div class="text">
-                                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-img" style="background-image: url({{ asset('package/homebuilder/images/person_3.jpg') }})"></div>
-                                            <div class="pl-3">
-                                                <p class="name">Roger Scott</p>
-                                                <span class="position">Marketing Manager</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="testimony-wrap py-4">
-                                    <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                                    <div class="text">
-                                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-img" style="background-image: url({{ asset('package/homebuilder/images/person_1.jpg') }})"></div>
-                                            <div class="pl-3">
-                                                <p class="name">Roger Scott</p>
-                                                <span class="position">Marketing Manager</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="testimony-wrap py-4">
-                                    <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-quote-left"></span></div>
-                                    <div class="text">
-                                        <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                                        <div class="d-flex align-items-center">
-                                            <div class="user-img" style="background-image: url({{ asset('package/homebuilder/images/person_2.jpg') }})"></div>
-                                            <div class="pl-3">
-                                                <p class="name">Roger Scott</p>
-                                                <span class="position">Marketing Manager</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        platforms = this.physics.add.staticGroup();
 
-    </span>
-@stop
+        platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-@section('script')
-    <script src="{{ asset('/js/animate.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            anime({
-                targets: '.test-animate',
-                scale: [
-                    {value: .1, easing: 'easeOutSine', duration: 500},
-                    {value: 1, easing: 'easeInOutQuad', duration: 1200}
-                ],
-                delay: anime.stagger(200, {grid: [14, 5], from: 'center'})
-            });
+        platforms.create(600, 400, 'ground');
+        platforms.create(50, 250, 'ground');
+        platforms.create(750, 220, 'ground');
+
+        player = this.physics.add.sprite(100, 450, 'dude');
+
+        player.setBounce(0.2);
+        player.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
         });
 
-        let page = new Vue({
-            el: '.page',
-            data: {
-                news: [],
-                yahooHot: [],
-                netFamous: [],
-                hotNews: [],
-                tabs: [],
-                pageNews: [],
-                selectFrom: [],
-                selectTo: [],
-            },
-            beforeMount(){
-                this.getCreateData()
-            },
-            methods: {
-                getCreateData() {
-                    let self = this;
-                    axios.get("{{ route('test.http.getHttpIndexData') }}")
-                        .then(function (rep) {
-                            console.log(rep.data);
-                            self.news = rep.data.news;
-                            self.yahooHot = rep.data.yahooHot;
-                            self.netFamous = rep.data.netFamous;
-                            self.hotNews = rep.data.hotNews;
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
 
-                            self.$nextTick(function(){
-                                self.tabs = rep.data.tabs;
-                                self.pageNews = rep.data.pageNews;
-                            });
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
-                        })
-                        .catch(function (error) {
-                            alert('error');
-                            console.log(error);
-                        })
-                }
-            },
-            filters: {
-                setBkImg(img) {
-                    console.log(img)
-                    return "background-image: url(" + img + ")";
-                },
-                setTab(index) {
-                    return '#home' + index;
-                },
-                setId(index) {
-                    return 'home' + index;
-                },
-            }
-        })
-    </script>
-@stop
+        cursors = this.input.keyboard.createCursorKeys();
+
+        stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 }
+        });
+
+        stars.children.iterate(function (child) {
+
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+        });
+
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+        this.physics.add.collider(player, platforms);
+        this.physics.add.collider(stars, platforms);
+
+        this.physics.add.overlap(player, stars, collectStar, null, this);
+    }
+
+    function update ()
+    {
+        if (cursors.left.isDown)
+        {
+            player.setVelocityX(-160);
+
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(160);
+
+            player.anims.play('right', true);
+        }
+        else
+        {
+            player.setVelocityX(0);
+
+            player.anims.play('turn');
+        }
+
+        if (cursors.up.isDown && player.body.touching.down)
+        {
+            player.setVelocityY(-330);
+        }
+    }
+
+    function collectStar (player, star)
+    {
+        star.disableBody(true, true);
+
+        score += 10;
+        scoreText.setText('Score: ' + score);
+    }
+
+</script>
+
+</body>
+</html>
